@@ -1,0 +1,10 @@
+(cl:in-package turtle_battle-msg)
+(cl:export '(TURTLE1_HEALTH-VAL
+          TURTLE1_HEALTH
+          TURTLE2_HEALTH-VAL
+          TURTLE2_HEALTH
+          TURTLE1_ATTACKS_REMAINING-VAL
+          TURTLE1_ATTACKS_REMAINING
+          TURTLE2_ATTACKS_REMAINING-VAL
+          TURTLE2_ATTACKS_REMAINING
+))
