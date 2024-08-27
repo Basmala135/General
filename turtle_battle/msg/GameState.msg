@@ -1,0 +1,4 @@
+int32 turtle1_health
+int32 turtle2_health
+int32 turtle1_attacks_remaining
+int32 turtle2_attacks_remaining
