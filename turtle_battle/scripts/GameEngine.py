@@ -1,6 +1,7 @@
 import rospy
 from turtlesim.msg import Pose
 from std_msgs.msg import Bool
+from turtlesim.srv import SetPen
 from pynput import keyboard
 
 class GameEngine:
@@ -13,7 +14,7 @@ class GameEngine:
         self.turtle2_health = 100
         self.turtle1_attacks_remaining = 10
         self.turtle2_attacks_remaining = 10
-        self.attack_range = 4  # range of attack for example
+        self.attack_range = 1  # range of attack for example
         
         # Initialize positions
         self.turtle1_pos = (5.4, 5.4)  # Default value for turtle1 position
@@ -30,6 +31,9 @@ class GameEngine:
         self.turtle1_attack_sub = rospy.Subscriber('/turtle1/attack', Bool, self.turtle1_attack_callback)
         self.turtle2_attack_sub = rospy.Subscriber('/turtle2/attack', Bool, self.turtle2_attack_callback)
 
+        # Set Pen
+        self.SetPen(0, 0, 0, 0, 1)
+
         # Main loop
         self.main_loop()
 
@@ -44,6 +48,18 @@ class GameEngine:
     
     def turtle2_attack_callback(self, msg: Bool):
         self.turtle2_attack = msg.data
+    
+    def SetPen(self, r, g, b, width, off):
+        rospy.wait_for_service('turtle1/set_pen')
+        rospy.wait_for_service('turtle2/set_pen')
+        try:
+            self.setPen1 = rospy.ServiceProxy('turtle1/set_pen', SetPen)
+            self.setPen2 = rospy.ServiceProxy('turtle2/set_pen', SetPen)
+
+            self.setPen1(r, g, b, width, off)
+            self.setPen2(r, g, b, width, off)
+        except rospy.ServiceException as e:
+            pass
 
     def attack(self, attacker_pos, enemy_pos):
         rospy.sleep(1)
