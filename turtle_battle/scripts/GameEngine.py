@@ -12,7 +12,7 @@ class GameEngine:
         self.turtle2_health = 100
         self.turtle1_attacks_remaining = 10
         self.turtle2_attacks_remaining = 10
-        self.attack_range = 10  # range of attack for example
+        self.attack_range = 0.2  # range of attack for example
         
         # Initialize positions
         self.turtle1_pos = (5.4, 5.4)  # Default value for turtle1 position
