@@ -47,16 +47,33 @@ class GameEngine:
             flag=True   #represents if attack is pressed
             if flag:
                 self.turtle1_attacks_remaining-=1
+                if self.turle1_attacks_remaining==0
+                    rospy.loginfo(" turtle 2 wins!!")
+                    rospy.signal_shutdown("turtle 2 wins!!")
+                    break
                 if self.attack(self.turtle1_pos, self.turtle2_pos):
                     self.turtle2_health -= 50
                     rospy.loginfo(f"Turtle2 hit by Turtle1! Turtle2's health is now {self.turtle2_health}")
+                    if self.turtle2_health<=0
+                        rospy.loginfo(" turtle 1 wins!!")
+                        rospy.signal_shutdown("turtle 1 wins!!")
+                        break
             else:
                 self.turtle2_attacks_remaining-=1
+                if self.turle2_attacks_remaining==0
+                    rospy.loginfo(" turtle 1 wins!!")
+                    rospy.signal_shutdown("turtle 1 wins!!")
+                    break
+    
                 if self.attack(self.turtle2_pos, self.turtle1_pos):
                     self.turtle1_health -= 50
                     rospy.loginfo(f"Turtle1 hit by Turtle2! Turtle1's health is now {self.turtle1_health}")
+                    if self.turtle1_health<=0
+                        rospy.loginfo(" turtle 2 wins!!")
+                        rospy.signal_shutdown("turtle 2 wins!!")
+                        break
 
-            rospy.sleep(1)  # Add sleep to avoid excessive CPU usage
+              
 
 if __name__ == '__main__':
     try:
