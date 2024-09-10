@@ -22,7 +22,7 @@ For dribbling, motors that offer a good balance between torque and speed are nee
   - **Features**: Extremely lightweight, high speed, and fine control.
   - **Link**: [8520 Coreless Motor](https://www.amazon.com/DaFuRui-8520-8-5x20mm-Coreless-53000Rpm/dp/B09XBBNNVR)
 
-    ### 3. Shooting and Passing Motors
+### 3. Shooting and Passing Motors
 For shooting and passing, motors with high torque for powerful shots and passes, as well as motors with high speed for rapid actions:
 - **Stepper Motors**: Provide high torque and precise control, which is crucial for consistent shooting and passing.
   - **Example Motor**: NEMA 17 Stepper Motor  12V
