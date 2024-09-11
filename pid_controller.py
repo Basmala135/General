@@ -5,7 +5,7 @@ from tf.transformations import euler_from_quaternion
 from math import atan2, sqrt, cos, sin
 
 # PID gains
-Kp_lin = 1.0
+Kp_lin = 0.5
 Ki_lin = 0.0
 Kd_lin = 0.1
 
@@ -14,7 +14,7 @@ Ki_ang = 0.0
 Kd_ang = 0.1
 
 # Velocity limits
-MAX_LINEAR_VELOCITY = 1.5
+MAX_LINEAR_VELOCITY = 0.5
 MAX_ANGULAR_VELOCITY = 1.0
 
 # Thresholds
