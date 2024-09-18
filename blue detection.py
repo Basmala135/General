@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import rospy
 from sensor_msgs.msg import Image
 from std_msgs.msg import Bool
@@ -23,9 +21,9 @@ class BlueBallDetector:
         self.detect_pub = rospy.Publisher("/blue_ball_detected", Bool, queue_size=10)
 
         # Load YOLOv8 model from ultralytics
-        self.model = YOLO('yolov8n.pt')  # Using the pre-trained YOLOv8n model
+        self.model = YOLO('yolov8n.pt')  # Path to your YOLO model
 
-        # Threshold for blue detection
+        # Define color range for detecting blue in HSV
         self.lower_blue = np.array([100, 150, 0])
         self.upper_blue = np.array([140, 255, 255])
 
@@ -51,7 +49,7 @@ class BlueBallDetector:
         else:
             rospy.loginfo("No blue ball detected.")
 
-        # Optionally, visualize the frame with detections
+        # Optionally, visualize the frame with detections (for debugging)
         cv2.imshow("YOLO Detection", frame)
         cv2.waitKey(1)
 
