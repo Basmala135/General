@@ -10,7 +10,7 @@ class RobotNavigator:
         rospy.init_node('robot_navigator', anonymous=True)
         self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
         self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-        self.ball_detected_sub = rospy.Subscriber('/blue_ball_detected', Bool, self.ball_detected)  #subscribe to the camera results
+        self.ball_detected_sub = rospy.Subscriber('/blue_ball_detector', Bool, self.ball_detected)  #subscribe to the camera results
         self.imu_sub = rospy.Subscriber('/imu', Imu, self.imu_callback)  # Subscribe to IMU sensor
 
         self.robot_x = 0
@@ -41,7 +41,6 @@ class RobotNavigator:
             twist.angular.z = 0.5  # Adjust rotation speed
             self.cmd_vel_pub.publish(twist)
             rospy.sleep(0.1)
-        self.search_ball()
         twist.angular.z = 0
         self.cmd_vel_pub.publish(twist)
         self.search_ball()
@@ -53,10 +52,9 @@ class RobotNavigator:
             twist.linear.x = -0.2  # Move backward
             self.cmd_vel_pub.publish(twist)
             rospy.sleep(0.1)
-
         twist.linear.x = 0
         self.cmd_vel_pub.publish(twist)
-        self.search_ball()
+        self.rotate_180()
     def move(self):
         twist = Twist()
         twist.linear.x = 0.3
