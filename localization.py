@@ -3,7 +3,6 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu  # Added IMU sensor input
 from std_msgs.msg import Bool
-#from                     # add the message here
 import math
 
 class RobotNavigator:
@@ -11,7 +10,7 @@ class RobotNavigator:
         rospy.init_node('robot_navigator', anonymous=True)
         self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
         self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-        self.ball_detected_sub = rospy.Subscriber('/ball_detected', Bool, self.ball_detected_callback)  #subscribe to the camera results
+        self.ball_detected_sub = rospy.Subscriber('/blue_ball_detected', Bool, self.ball_detected)  #subscribe to the camera results
         self.imu_sub = rospy.Subscriber('/imu', Imu, self.imu_callback)  # Subscribe to IMU sensor
 
         self.robot_x = 0
@@ -38,12 +37,14 @@ class RobotNavigator:
         # Rotate 180 degrees
         twist = Twist()
         target_angle = (self.current_orientation + math.pi) % (2 * math.pi)
-        while abs(self.current_orientation - target_angle) > 0.1:  # Rotate until the target is reached
+        while abs(angle_diff(self.current_orientation, target_angle)) > 0.1:  # Rotate until the target is reached
             twist.angular.z = 0.5  # Adjust rotation speed
             self.cmd_vel_pub.publish(twist)
             rospy.sleep(0.1)
+        self.search_ball()
         twist.angular.z = 0
         self.cmd_vel_pub.publish(twist)
+        self.search_ball()
 
     def return_to_start(self):
         # Move back to the original starting position (0, 0.22)
@@ -52,9 +53,15 @@ class RobotNavigator:
             twist.linear.x = -0.2  # Move backward
             self.cmd_vel_pub.publish(twist)
             rospy.sleep(0.1)
+
         twist.linear.x = 0
         self.cmd_vel_pub.publish(twist)
-
+        self.search_ball()
+    def move(self):
+        twist = Twist()
+        twist.linear.x = 0.3
+        self.cmd_vel_pub.publish(twist)
+        self.check_zone()
     def search_ball(self):
         # rotates 10 degrees to detect the ball
         twist = Twist()
@@ -63,7 +70,8 @@ class RobotNavigator:
         while abs(self.current_orientation - target_angle) > 0.1:
             if self.ball_detected:
                 rospy.loginfo("Ball detected! Stopping rotation.")
-                break  # Stop rotation if the ball is detected
+                self.move()
+                
 
             twist.angular.z = 0.5  # Set rotation speed
             self.cmd_vel_pub.publish(twist)
@@ -91,9 +99,6 @@ class RobotNavigator:
         else:
             if not self.ball_detected:
                 self.search_ball()
-            else:
-                self.kick_ball()
-
 
 if __name__ == '__main__':
     try:
