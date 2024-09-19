@@ -59,6 +59,9 @@ class RobotNavigator:
         twist = Twist()
         twist.linear.x = 0.3
         self.cmd_vel_pub.publish(twist)
+        rospy.sleep(0.1)
+        twist.linear.x=0
+        self.cmd_vel_pub.publish(twist)
         self.check_zone()
     def search_ball(self):
         # rotates 10 degrees to detect the ball
