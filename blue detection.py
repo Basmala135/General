@@ -18,10 +18,10 @@ class BlueBallDetector:
         self.rgb_sub = rospy.Subscriber("/camera/rgb/image_raw", Image, self.rgb_callback)
 
         # Publisher to publish detection results (True if blue ball detected, False otherwise)
-        self.detect_pub = rospy.Publisher("/blue_ball_detected", Bool, queue_size=10)
+        self.detect_pub = rospy.Publisher("/robot_navigator", Bool, queue_size=10)
 
         # Load YOLOv8 model from ultralytics
-        self.model = YOLO('yolov8n.pt')  # Path to your YOLO model
+        self.model = YOLO('/home/roqia/catkin_ws2/src/finalComp_Group12/scripts/best.pt')  # Path to your YOLO model
 
         # Define color range for detecting blue in HSV
         self.lower_blue = np.array([100, 150, 0])
